@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+.code-block {
+    @apply my-4 rounded-lg overflow-hidden shadow-lg;
+}
+
+.code-header {
+    @apply flex justify-between items-center px-4 py-2 bg-gray-800 text-white;
+}
+
+.code-language {
+    @apply text-sm font-mono;
+}
+
+.copy-button {
+    @apply px-3 py-1 text-sm bg-gray-700 hover:bg-gray-600 rounded;
+}
+
+.chat-container {
+    @apply h-[calc(100vh-12rem)] overflow-y-auto;
+}
+
+.message {
+    @apply p-4 my-2 rounded-lg;
+}
+
+.user-message {
+    @apply bg-blue-50;
+}
+
+.assistant-message {
+    @apply bg-gray-50;
+}
+
+.loading-indicator {
+    @apply flex items-center justify-center p-4;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100 rounded;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 rounded hover:bg-gray-500;
+}

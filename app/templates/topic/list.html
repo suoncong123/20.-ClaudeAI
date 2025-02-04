@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Topics - {{ bot.name }}{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow rounded-lg">
+    <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-lg font-medium text-gray-900">Topics của {{ bot.name }}</h1>
+                <p class="mt-1 text-sm text-gray-500">{{ bot.description or 'Không có mô tả' }}</p>
+            </div>
+            <a href="{{ url_for('topic.create_topic', bot_id=bot.id) }}" 
+               class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                Tạo Topic Mới
+            </a>
+        </div>
+    </div>
+    
+    <div class="px-4 py-5 sm:p-6">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {% for topic in topics %}
+            <div class="bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="p-4">
+                    <h3 class="text-lg font-medium text-gray-900">{{ topic.name }}</h3>
+                    <p class="mt-1 text-sm text-gray-500">{{ topic.description or 'Không có mô tả' }}</p>
+                    <div class="mt-4 flex space-x-3">
+                        <a href="{{ url_for('chat.chat_room', topic_id=topic.id) }}" 
+                           class="text-blue-600 hover:text-blue-800">
+                            Vào Chat
+                        </a>
+                        <a href="{{ url_for('topic.edit_topic', topic_id=topic.id) }}" 
+                           class="text-gray-600 hover:text-gray-800">
+                            Chỉnh sửa
+                        </a>
+                        <form action="{{ url_for('topic.delete_topic', topic_id=topic.id) }}" 
+                              method="POST" class="inline" 
+                              onsubmit="return confirm('Bạn có chắc muốn xóa topic này?');">
+                            <button type="submit" class="text-red-600 hover:text-red-800">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-span-full text-center py-8 text-gray-500">
+                Chưa có topic nào được tạo. Hãy tạo topic đầu tiên của bạn!
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

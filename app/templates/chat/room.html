@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - {{ topic.name }}{% endblock %}
+
+{% block content %}
+<div class="flex flex-col h-[calc(100vh-4rem)]">
+    <!-- Header -->
+    <div class="bg-white shadow-sm px-4 py-3 border-b">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-lg font-medium text-gray-900">{{ topic.name }}</h1>
+                <p class="text-sm text-gray-500">Bot: {{ bot.name }}</p>
+            </div>
+            <a href="{{ url_for('topic.list_topics', bot_id=bot.id) }}" 
+               class="text-gray-600 hover:text-gray-900">
+                Quay lại Topics
+            </a>
+        </div>
+    </div>
+
+    <!-- Chat Container -->
+    <div id="chat-container" 
+         class="flex-1 overflow-y-auto p-4 bg-gray-50" 
+         data-topic-id="{{ topic.id }}">
+        {% for message in conversations %}
+        <div class="message {% if message.role == 'user' %}user-message{% else %}assistant-message{% endif %}">
+            {% if message.has_code %}
+                {{ message.content|safe }}
+            {% else %}
+                {{ message.content|nl2br }}
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Message Input -->
+    <div class="bg-white border-t p-4">
+        <form id="message-form" class="flex space-x-4">
+            <input type="text" id="message-input"
+                   class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                   placeholder="Nhập tin nhắn của bạn..."
+                   required>
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                Gửi
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .user-message {
+        background-color: #f0f7ff;
+        margin-left: 2rem;
+        border-radius: 1rem 1rem 0 1rem;
+    }
+
+    .assistant-message {
+        background-color: #ffffff;
+        margin-right: 2rem;
+        border-radius: 1rem 1rem 1rem 0;
+    }
+
+    .message {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    .highlight {
+        margin: 1rem 0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    .highlight pre {
+        padding: 1rem;
+        overflow-x: auto;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

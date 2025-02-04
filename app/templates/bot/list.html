@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Bots - Claude AI{% endblock %}
+
+{% block content %}
+<div class="bg-white shadow rounded-lg">
+    <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+        <div class="flex justify-between items-center">
+            <h1 class="text-lg font-medium text-gray-900">Bots</h1>
+            <a href="{{ url_for('bot.create_bot') }}" 
+               class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+                Tạo Bot Mới
+            </a>
+        </div>
+    </div>
+    
+    <div class="px-4 py-5 sm:p-6">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {% for bot in bots %}
+            <div class="bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div class="p-4">
+                    <h3 class="text-lg font-medium text-gray-900">{{ bot.name }}</h3>
+                    <p class="mt-1 text-sm text-gray-500">{{ bot.description or 'Không có mô tả' }}</p>
+                    <div class="mt-4 flex space-x-3">
+                        <a href="{{ url_for('topic.list_topics', bot_id=bot.id) }}" 
+                           class="text-blue-600 hover:text-blue-800">
+                            Xem Topics ({{ bot.topics|length }})
+                        </a>
+                        <a href="{{ url_for('bot.edit_bot', bot_id=bot.id) }}" 
+                           class="text-gray-600 hover:text-gray-800">
+                            Chỉnh sửa
+                        </a>
+                        <form action="{{ url_for('bot.delete_bot', bot_id=bot.id) }}" 
+                              method="POST" class="inline" 
+                              onsubmit="return confirm('Bạn có chắc muốn xóa bot này?');">
+                            <button type="submit" class="text-red-600 hover:text-red-800">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-span-full text-center py-8 text-gray-500">
+                Chưa có bot nào được tạo. Hãy tạo bot đầu tiên của bạn!
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
